@@ -22,12 +22,10 @@ class AttributeDict(dict):
 
 
 config_data = {
-    'device': 'CAMERA0',
     'broker_ip': '192.168.0.192',
     'topic': 'monitoring/frame',
-    'camera_id': 0,
     'frame_size': (240, 240),
-    'reverse': True
+    'bgr_classifier': False
 }
 
 

@@ -2,7 +2,7 @@ from typing import *
 import abc
 
 import numpy as np
-# from ..config import AttributeDict
+from config import AttributeDict
 
 
 IMAGE_TYPE = np.ndarray 
@@ -13,7 +13,7 @@ class AbstractSupportSet(abc.ABC):
 
     _support_set: Dict[str, List[IMAGE_TYPE]]
 
-    def __init__(self, support_set: Dict[str, List[str]], config, **kwargs) -> None:
+    def __init__(self, support_set: Dict[str, List[str]], config: AttributeDict, **kwargs) -> None:
         self._config = config
         self._support_set: Dict[str, List[IMAGE_TYPE]] = self._get_support_set(support_set)
         self._assert_support_set_size()
@@ -47,7 +47,7 @@ class AbstractSupportSet(abc.ABC):
 class AbstractClassifier(abc.ABC):
     
 
-    def __init__(self, support_set: AbstractSupportSet, config, **kwargs):
+    def __init__(self, support_set: AbstractSupportSet, config: AttributeDict, **kwargs):
         self._support_set = support_set
         self._config = config
 

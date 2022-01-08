@@ -5,15 +5,15 @@ import cv2
 import face_recognition
 import numpy as np
 
+from config import AttributeDict
 from models.abstract_classifier import AbstractSupportSet, AbstractClassifier, IMAGE_TYPE, BOUNDING_BOX
 
-MODEL = "cnn" # convolutional
 
 
 
 class OpenCVSupportSet(AbstractSupportSet):
     
-    def __init__(self, support_set: Dict[str, List[str]], config, **kwargs) -> None:
+    def __init__(self, support_set: Dict[str, List[str]], config: AttributeDict, **kwargs) -> None:
         super(OpenCVSupportSet, self).__init__(support_set, config, **kwargs)
 
     def _get_support_set(self, support_set: Dict[str, List[str]]) -> Dict[str, List[IMAGE_TYPE]]:
@@ -42,7 +42,7 @@ class OpenCVSupportSet(AbstractSupportSet):
 
 class OpenCVClassifier(AbstractClassifier):
     
-    def __init__(self, support_set: OpenCVSupportSet, config, **kwargs):
+    def __init__(self, support_set: OpenCVSupportSet, config: AttributeDict, **kwargs):
         super(OpenCVClassifier, self).__init__(support_set, config, **kwargs)
         self.detector = cv2.CascadeClassifier('/home/konrad/PythonProjects/IOT-Monitoring-Project/models/haar.xml')
 
@@ -58,18 +58,12 @@ class OpenCVClassifier(AbstractClassifier):
 
     def predict(self, img: IMAGE_TYPE) -> List[Tuple[str, float, BOUNDING_BOX]]:
         # convert BGR2RGB may be redundant in the future!
-        # if config.bgr:
-        if True:
+        if self._config.bgr_classifier:
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-        # get location
-        print(img.shape)
+
         t1 = time.time()
-        # face_locations = face_recognition.face_locations(cv2.cvtColor(img, cv2.COLOR_RGB2GRAY), model='hog')
         rects = self.detector.detectMultiScale(cv2.cvtColor(img, cv2.COLOR_RGB2GRAY), scaleFactor=1.1, 
             minNeighbors=5, minSize=(30, 30))
-        # OpenCV returns bounding box coordinates in (x, y, w, h) order
-        # but we need them in (top, right, bottom, left) order, so we
-        # need to do a bit of reordering
         face_locations = [(y, x + w, y + h, x) for (x, y, w, h) in rects]
         t2 = time.time()
         face_encodings = face_recognition.face_encodings(img, face_locations)
