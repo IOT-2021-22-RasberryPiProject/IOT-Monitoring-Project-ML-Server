@@ -53,6 +53,7 @@ class Reciever:
         frame = cv2.imdecode(np.frombuffer(img, dtype=np.uint8), 1)
         results = self._model.predict(frame)
 
+        print(results)
         for name, proba, bbox, in results:
             y1, x2, y2, x1 = bbox[0], bbox[1], bbox[2], bbox[3]
 
@@ -64,7 +65,7 @@ class Reciever:
                 0.5, 
                 (0, 0, 200), 
                 1)
-            # frame = cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 200), 4)
+            frame = cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 200), 4)
             # cv2.imwrite('Dupa.jpg', frame)
         _, buffer = cv2.imencode('.jpg', frame)
         # Converting into encoded bytes

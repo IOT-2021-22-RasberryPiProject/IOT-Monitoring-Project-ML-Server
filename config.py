@@ -1,5 +1,7 @@
 from typing import *
 
+import torch
+
 
 class AttributeDict(dict):
     """
@@ -25,7 +27,32 @@ config_data = {
     'broker_ip': '192.168.0.192',
     'topic': 'monitoring/frame',
     'frame_size': (240, 240),
-    'bgr_classifier': False
+    'bgr_classifier': False,
+
+    # mediapipe detection params
+    'model_selection': 0,
+    'min_detection_confidence': 0.5,
+
+    # torch classification params
+    'pretrained_model': 'casia-webface',
+    'torch_model_image_shape': (84, 84),
+    'device': torch.device('cuda' if torch.cuda.is_available() else 'cpu'),
+
+    # deepnet detector params
+    'detector_backend': 'ssd',
+    # definitely not to use:
+    # * OpenFace - tragedy
+    # * OpenID - tragedy
+    # * Dlib - tragedy
+    # * DeepFace - tragedy
+    # consider:
+    # * ArcFace  - quick and slight accurate
+    # * VGG-Face - best but slow
+    # * Facenet - ok
+    # * Facenet512 - same speed as Facenet, but better
+    'face_detection_model': 'Facenet512', 
+    'face_comparison_threshold': 0.5,
+    'min_face_width': 0,
 }
 
 

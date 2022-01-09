@@ -1,0 +1,1 @@
+from models.opencv_classifiers.opencv_fr_classifier import OpenCVClassifier, OpenCVSupportSet

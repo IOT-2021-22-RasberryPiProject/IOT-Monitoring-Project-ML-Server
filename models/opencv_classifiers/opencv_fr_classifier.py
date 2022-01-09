@@ -44,7 +44,7 @@ class OpenCVClassifier(AbstractClassifier):
     
     def __init__(self, support_set: OpenCVSupportSet, config: AttributeDict, **kwargs):
         super(OpenCVClassifier, self).__init__(support_set, config, **kwargs)
-        self.detector = cv2.CascadeClassifier('/home/konrad/PythonProjects/IOT-Monitoring-Project/models/haar.xml')
+        self.detector = cv2.CascadeClassifier('/home/konrad/PythonProjects/IOT-Monitoring-Project/files/haar.xml')
 
     def _compute_score(self, face_embeddings: List[np.ndarray], captured_face: IMAGE_TYPE) -> List[float]:
         return face_recognition.face_distance(face_embeddings, captured_face)
@@ -83,11 +83,6 @@ class OpenCVClassifier(AbstractClassifier):
             )
             print(f'-> {t2 - t1}, 2 ->{t3 -t2}, 3 -> {t4-t3}')
         return result
-
-
-
-
-
 
 
 if __name__ == '__main__':
