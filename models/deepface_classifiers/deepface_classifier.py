@@ -1,6 +1,5 @@
 from typing import *
 
-import time
 import os
 from tqdm import tqdm
 
@@ -18,11 +17,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 class DeepFaceClassifier(AbstractClassifier):
     """
-    Pipeline:
-    PRE_CLASSIFY:
-        1. build model
-        2. build embeddings
-    CLASSIFY:
+    Few-Shot classifier using help of DeepFace Library
     """
 
     def __init__(self, support_set_paths: Dict[str, Iterable[str]], config: AttributeDict) -> None:
@@ -38,6 +33,9 @@ class DeepFaceClassifier(AbstractClassifier):
         self._support_set = self._build_embeddings(support_set_paths)
 
     def _build_embeddings(self, support_set_paths: Dict[str, Iterable[str]]):
+        """
+        Builds embedding using chosen model
+        """
         _support_set = {}
         for person, paths in tqdm(support_set_paths.items()):
             embeddings = []
@@ -51,12 +49,15 @@ class DeepFaceClassifier(AbstractClassifier):
                     )
                     embedding = self._face_compare_model.predict(img)[0, :]
                     embeddings.append(embedding)
-                except:
+                except ValueError:
                     print(f"Couldn't find face for photo: {image_path}")
             _support_set[person] = embeddings
         return _support_set
 
     def _get_score(self, img_embedding) -> Tuple[str, float]:
+        """
+        Get scores by comparing detected face to support set
+        """
         keys = list(self._support_set.keys())
         distances = []
         for key in keys:
@@ -74,7 +75,9 @@ class DeepFaceClassifier(AbstractClassifier):
             return keys[best_idx], distances[best_idx]
 
     def predict(self, img: IMAGE_TYPE) -> List[Tuple[str, float, BOUNDING_BOX]]:
-        # detect faces 
+        """
+        Detect and recognize faces
+        """
         try:
             faces = FaceDetector.detect_faces(
                 self._face_detector_model,

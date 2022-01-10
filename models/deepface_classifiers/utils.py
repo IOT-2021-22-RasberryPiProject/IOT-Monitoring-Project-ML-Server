@@ -4,15 +4,19 @@ import cv2
 import numpy as np
 from keras.preprocessing import image
 
+from models import IMAGE_TYPE
+
 
 def preprocess_detected_face(
-        img,
-        target_size,
-        grayscale=False,
-        enforce_detection=True,
+        img: IMAGE_TYPE,
+        target_size: Iterable[int],
+        grayscale: bool = False,
+        enforce_detection: bool = True,
 ):
     """
-    Fixed 2 times detecting face in DeepFace library
+    This function is adjusted to our detection system version of this:
+    https://github.com/serengil/deepface/blob/master/deepface/commons/functions.py
+    This version is important because it allows us not to detect face 2 times in a pipeline
     """
     # --------------------------
     base_img = img.copy()
@@ -72,6 +76,9 @@ def preprocess_detected_face(
 
 
 def aggregate_scores_3sigmas(scores: Iterable[float]) -> float:
+    """
+    Aggregate scores using 3sigmas rule
+    """
     std = np.std(scores)
     mean = np.mean(scores)
     new_scores = [score for score in scores if mean + 3 * std > score > mean - 3 * std]

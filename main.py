@@ -4,7 +4,7 @@ from models import DeepFaceClassifier
 from config import CONFIG
 
 
-def main():
+def main() -> None:
     model = DeepFaceClassifier({
         'Natalia': [
             '/home/konrad/PythonProjects/IOT-Monitoring-Project/support_set/Natalia_Psiuk/1.jpg',

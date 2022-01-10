@@ -1,10 +1,8 @@
 from typing import *
 import time
 
-
 from models import BOUNDING_BOX
 from config import AttributeDict
-
 
 """
 Decision process: 
@@ -47,8 +45,10 @@ END;
 
 
 class DecisionModel:
-
     class _Person:
+        """
+        Struct to represent people in decission model
+        """
 
         def __init__(self, name: str, frames_undetected: int, frames_detected: int, detected: bool = False):
             self.name = name
@@ -72,6 +72,9 @@ class DecisionModel:
         ]
 
     def verify_decision(self, detections: List[Tuple[str, float, BOUNDING_BOX]]) -> List[str]:
+        """
+        Verifies decision using decission algorithm
+        """
         detections = map(lambda x: x[0], detections)
         successes = []
         for person in self._people:
@@ -105,11 +108,14 @@ class DecisionHandler:
     def __init__(self, config: AttributeDict, people: List[str]):
         self._config = config
         self._people = {
-            person: False # False == outside
+            person: False  # False == outside
             for person in people
         }
 
     def handle_detections(self, successes: List[str]) -> None:
+        """
+        Handle detection (for example log to txt, print, save in database etc)
+        """
         for person in successes:
             self._people[person] = not self._people[person]
             if self._people[person]:

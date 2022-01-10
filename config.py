@@ -16,7 +16,7 @@ class AttributeDict(dict):
     >> Worker
 
     """
-    __slots__ = () 
+    __slots__ = ()
     __getattr__ = dict.__getitem__
     __setattr__ = dict.__setitem__
 
@@ -29,6 +29,7 @@ config_data = {
     # frame params
     'frame_size': (240, 240),
     'bgr_classifier': False,
+    'show_frames': True,
 
     # mediapipe detection params
     'model_selection': 0,
@@ -51,8 +52,8 @@ config_data = {
     # * VGG-Face - best but slow
     # * Facenet - ok
     # * Facenet512 - same speed as Facenet, but better performance
-    'face_detection_model': 'Facenet512', 
-    'face_comparison_threshold': 0.6,
+    'face_detection_model': 'Facenet512',
+    'face_comparison_threshold': 0.6,   # threshold depends on many thing, find it by POC
     'min_face_width': 0,
 
     # decision model params
@@ -61,11 +62,10 @@ config_data = {
     'frames_undetected_threshold': 5,
 }
 
-
 CONFIG = AttributeDict(config_data)
 
 if __name__ == '__main__':
     a = AttributeDict({'Test1': 'nic'})
     a['Test2'] = 'woda'
-    a.Test3= 20
+    a.Test3 = 20
     print(a.items())
