@@ -75,7 +75,7 @@ class DecisionModel:
         """
         Verifies decision using decission algorithm
         """
-        detections = map(lambda x: x[0], detections)
+        detections = list(map(lambda x: x[0], detections))
         successes = []
         for person in self._people:
             if person.name in detections:
@@ -97,6 +97,7 @@ class DecisionModel:
                         successes.append(person.name)
                 else:
                     person.frames_detected = self._config.frames_detected_threshold
+        # print(self._people)
         return successes
 
 

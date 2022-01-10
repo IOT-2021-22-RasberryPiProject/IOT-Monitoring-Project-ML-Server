@@ -20,9 +20,10 @@ class Receiver:
         self._config = config
 
         # decision model
-        print(f'Found people: {model.people}')
-        self._decision_model = DecisionModel(config, model.people)
-        self._decision_handler = DecisionHandler(config, model.people)
+        found_people = model.people + ['Undefined']
+        print(f'Found people: {found_people}')
+        self._decision_model = DecisionModel(config, found_people)
+        self._decision_handler = DecisionHandler(config, found_people)
 
         # mosquitto
         self._client = Client()
