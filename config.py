@@ -1,5 +1,3 @@
-from typing import *
-
 import torch
 
 
@@ -24,8 +22,11 @@ class AttributeDict(dict):
 
 
 config_data = {
+    # mqtt params
     'broker_ip': '192.168.0.192',
     'topic': 'monitoring/frame',
+
+    # frame params
     'frame_size': (240, 240),
     'bgr_classifier': False,
 
@@ -49,18 +50,22 @@ config_data = {
     # * ArcFace  - quick and slight accurate
     # * VGG-Face - best but slow
     # * Facenet - ok
-    # * Facenet512 - same speed as Facenet, but better
+    # * Facenet512 - same speed as Facenet, but better performance
     'face_detection_model': 'Facenet512', 
-    'face_comparison_threshold': 0.5,
+    'face_comparison_threshold': 0.6,
     'min_face_width': 0,
+
+    # decision model params
+
+    'frames_detected_threshold': 5,
+    'frames_undetected_threshold': 5,
 }
 
 
 CONFIG = AttributeDict(config_data)
 
 if __name__ == '__main__':
-    a = AttributeDict({'Duk': 'nic'})
-    a['Dupa'] = 'woda'
-    a.nic = 20
+    a = AttributeDict({'Test1': 'nic'})
+    a['Test2'] = 'woda'
+    a.Test3= 20
     print(a.items())
-
