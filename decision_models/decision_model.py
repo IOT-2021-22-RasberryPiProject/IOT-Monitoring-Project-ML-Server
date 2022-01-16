@@ -113,13 +113,20 @@ class DecisionHandler:
             for person in people
         }
 
-    def handle_detections(self, successes: List[str]) -> None:
+    def handle_detections(self, successes: List[str]) -> List[Tuple[str, int]]:
         """
         Handle detection (for example log to txt, print, save in database etc)
         """
+        msgs = []
         for person in successes:
             self._people[person] = not self._people[person]
             if self._people[person]:
-                print(f'{person} came inside {time.strftime("%H:%M:S", time.gmtime())}')
+                msg = f'{person} came inside {time.strftime("%H:%M:%S", time.gmtime())}'
             else:
-                print(f'{person} came outside {time.strftime("%H:%M:S", time.gmtime())}')
+                msg = f'{person} came outside {time.strftime("%H:%M:%S", time.gmtime())}'
+            msgs.append((
+                msg, 0 if person == 'Undefined' else 1
+            ))
+        if msgs:
+            print(msgs)
+        return msgs

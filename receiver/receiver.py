@@ -52,7 +52,19 @@ class Receiver:
                 pass
 
     def stop(self):
-        pass
+        self._client.loop_stop()
+
+    def send_msg(self, msgs: List[Tuple[str, int]]) -> None:
+        """
+        Sends messages about people when person comes in/out
+        """
+        for msg in msgs:
+            message = {
+                'message': msg[0],
+                'statusCode': msg[1]
+            }
+            message_encoded = json.dumps(message)
+            self._client.publish(self._config.sending_topic, message_encoded)
 
     def subscribe(self, client, userdata, flags, rc) -> None:
         """
@@ -97,7 +109,9 @@ class Receiver:
             frame = cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 200), 4)
         self._frame = frame
         successes = self._decision_model.verify_decision(results)
-        self._decision_handler.handle_detections(successes)
+        msgs = self._decision_handler.handle_detections(successes)
+        if msgs:
+            self.send_msg(msgs)
 
     def _try_connect(self, broker_ip: str) -> None:
         """

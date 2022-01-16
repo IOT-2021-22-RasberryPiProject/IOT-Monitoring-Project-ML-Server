@@ -57,9 +57,11 @@ config_data = {
     'min_face_width': 0,
 
     # decision model params
+    'frames_detected_threshold': 8,
+    'frames_undetected_threshold': 8,
 
-    'frames_detected_threshold': 5,
-    'frames_undetected_threshold': 5,
+    # sending parameters
+    'sending_topic': 'monitoring/detected'
 }
 
 CONFIG = AttributeDict(config_data)
